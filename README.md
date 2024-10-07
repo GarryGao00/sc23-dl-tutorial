@@ -46,7 +46,7 @@ For running slurm jobs on Perlmutter, we will use training accounts which are pr
 * `-A ntrain4_g` is required for training accounts
 * `--reservation=<reservation_name>` is required to access the set of GPU nodes we have reserved for the duration of the tutorial. For the morning session use `<reservation_name>` set to `sc23_dl_tutorial_1`, and for the afternoon session use `<reservation_name>` set to `sc23_dl_tutorial_2` (we have two different size reservations for the single-GPU and multi-GPU sections respectively)
 
-The code can be run using the `nersc/pytorch:ngc-23.07-v0` docker container. On Perlmutter, docker containers are run via [shifter](https://docs.nersc.gov/development/shifter/), and this container is already downloaded and automatically invoked by our job submission scripts. Our container is based on the [NVIDIA NGC 23.07 pytorch container](https://docs.nvidia.com/deeplearning/frameworks/pytorch-release-notes/rel-23-07.html), with a few additional packages added.
+The code can be run using the `nersc/pytorch:ngc-23.07-v0` docker container. On Perlmutter, docker containers are run via [shifter](https://docs.nersc.gov/development/containers/shifter/), and this container is already downloaded and automatically invoked by our job submission scripts. Our container is based on the [NVIDIA NGC 23.07 pytorch container](https://docs.nvidia.com/deeplearning/frameworks/pytorch-release-notes/rel-23-07.html), with a few additional packages added.
 
 ### Installing Nsight Systems
 In this tutorial, we will be generating profile files using NVIDIA Nsight Systems on the remote systems. In order to open and view these
@@ -95,7 +95,7 @@ First, let us look at the performance of the training script without optimizatio
 
 On Perlmutter for the tutorial, we will be submitting jobs to the batch queue. To submit this job, use the following command:
 ```
-sbatch -n 1 -t 20 ./submit_pm.sh --config=short
+srun -n 1 -t 20 ./submit_pm.sh --config=short
 ```
 `submit_pm.sh` is a batch submission script that defines resources to be requested by SLURM as well as the command to run.
 Note that any arguments for `train.py`, such as the desired config (`--config`), can be added after `submit_pm.sh` when submitting, and they will be passed to `train.py` properly.

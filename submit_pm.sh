@@ -1,16 +1,7 @@
 #!/bin/bash 
-#SBATCH -C gpu 
-#SBATCH -q shared
-#SBATCH -A ntrain4
-#SBATCH --cpus-per-task 32
-#SBATCH --gpus-per-task 1
-#SBATCH --gpu-bind none
-#SBATCH --time=01:00:00
-#SBATCH --image=nersc/pytorch:ngc-23.07-v0
-#SBATCH --module=gpu,nccl-2.18
-#SBATCH --reservation=sc23_dl_tutorial_1
-#SBATCH -J vit-era5
-#SBATCH -o %x-%j.out
+
+module load gpu
+module load nccl-2.18
 
 DATADIR=/pscratch/sd/s/shas1693/data/sc23_tutorial_data/downsampled
 LOGDIR=${SCRATCH}/sc23-dl-tutorial/logs
@@ -34,7 +25,7 @@ export MASTER_ADDR=$(hostname)
 export CUDA_VISIBLE_DEVICES=3,2,1,0
 
 set -x
-srun -u shifter -V ${DATADIR}:/data -V ${LOGDIR}:/logs \
+shifter --image=nersc/pytorch:ngc-23.07-v0 -V ${DATADIR}:/data -V ${LOGDIR}:/logs \
     bash -c "
     source export_DDP_vars.sh
     ${PROFILE_CMD} python train.py ${args}
